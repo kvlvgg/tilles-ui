@@ -1,0 +1,263 @@
+// Миксины для работы с адаптивной версткой. Позаимстовованы из библиотеки bootstrap.
+// https://getbootstrap.com/docs/5.1/layout/breakpoints/#media-queries
+// Используют scss-переменные $grid-breakpoints, объявленные в ~/assets/_variables
+
+@use 'sass:map';
+
+// Breakpoint viewport sizes and media queries.
+//
+// Breakpoints are defined as a map of (name: minimum width), order from small to large:
+//
+//    (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px)
+//
+// The map defined in the `$grid-breakpoints` global variable is used as the `$breakpoints` argument by default.
+
+// Name of the next breakpoint, or null for the last breakpoint.
+//
+//    >> breakpoint-next(sm)
+//    md
+//    >> breakpoint-next(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
+//    md
+//    >> breakpoint-next(sm, $breakpoint-names: (xs sm md lg xl))
+//    md
+@function breakpoint-next(
+  $name,
+  $breakpoints: $grid-breakpoints,
+  $breakpoint-names: map-keys($breakpoints)
+) {
+  $n: index($breakpoint-names, $name);
+  @return if(
+    $n != null and $n < length($breakpoint-names),
+    nth($breakpoint-names, $n + 1),
+    null
+  );
+}
+
+// Minimum breakpoint width. Null for the smallest (first) breakpoint.
+//
+//    >> breakpoint-min(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
+//    576px
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+// Maximum breakpoint width. Null for the largest (last) breakpoint.
+// The maximum value is calculated as the minimum of the next one less 0.02px
+// to work around the limitations of `min-` and `max-` prefixes and viewports with fractional widths.
+// See https://www.w3.org/TR/mediaqueries-4/#mq-min-max
+// Uses 0.02px rather than 0.01px to work around a current rounding bug in Safari.
+// See https://bugs.webkit.org/show_bug.cgi?id=178261
+//
+//    >> breakpoint-max(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
+//    767.98px
+@function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+  $next: breakpoint-next($name, $breakpoints);
+  @return if($next, breakpoint-min($next, $breakpoints) - 0.02, null);
+}
+
+// Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
+// Makes the @content apply to the given breakpoint and wider.
+
+// media-breakpoint-up использовать для изменения свойств класса выше определенной ширины экрана.
+// Данный миксин приводит к созданию @media (min-width: $breakpoint).
+// Хорошо подходит для mobile first.
+
+// No media query necessary for xs breakpoint as it's effectively `@media (min-width: 0) { ... }`
+// @include media-breakpoint-up(sm) { ... } -> @media (min-width: 576px) { ... }
+// @include media-breakpoint-up(md) { ... } -> @media (min-width: 768px) { ... }
+// @include media-breakpoint-up(lg) { ... } -> @media (min-width: 992px) { ... }
+// @include media-breakpoint-up(xl) { ... } -> @media (min-width: 1200px) { ... }
+// @include media-breakpoint-up(xxl) { ... } -> @media (min-width: 1400px) { ... }
+
+// Пример использования:
+// Следущее объявление класса с использованием данного миксина
+// .class {
+//   display: flex;
+//   flex-direction: column;
+//   padding: 10px;
+
+//   @include media-breakpoint-up(md) {
+//     flex-direction: row;
+//     padding: 20px;
+//   }
+// }
+
+// приведет к следующим css стилям
+
+// .class {
+//   display: flex;
+//   flex-direction: column;
+//   padding: 10px;
+// }
+
+// @media (min-width: 768px) {
+//   .class {
+//     display: flex;
+//     flex-direction: row;
+//     padding: 20px;
+//   }
+// }
+
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
+// Makes the @content apply to the given breakpoint and narrower.
+
+// media-breakpoint-down использовать для изменения свойств класса ниже определенной ширины экрана.
+// Данный миксин приводит к созданию @media (max-width: $breakpoint).
+
+// No media query necessary for xs breakpoint as it's effectively `@media (max-width: 0) { ... }`
+// @include media-breakpoint-down(sm) { ... } -> @media (max-width: 575.98px) { ... }
+// @include media-breakpoint-down(md) { ... } -> @media (max-width: 767.98px) { ... }
+// @include media-breakpoint-down(lg) { ... } -> @media (max-width: 991.98px) { ... }
+// @include media-breakpoint-down(xl) { ... } -> @media (max-width: 1199.98px) { ... }
+// @include media-breakpoint-down(xxl) { ... } -> @media (max-width: 1399.98px) { ... }
+
+// Пример использования:
+// Следущее объявление класса с использованием данного миксина
+// .class {
+//   display: flex;
+//   flex-direction: row;
+//   padding: 20px;
+
+//   @include media-breakpoint-down(md) {
+//     flex-direction: column;
+//     padding: 10px;
+//   }
+// }
+
+// приведет к следующим css стилям
+
+// .class {
+//   display: flex;
+//   flex-direction: row;
+//   padding: 20px;
+// }
+
+// @media (max-width: 767.98px) {
+//   .class {
+//     display: flex;
+//     flex-direction: column;
+//     padding: 10px;
+//   }
+// }
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Миксины ниже не являются частью библиотеки bootstrap. Это кастомные миксины.
+// Бывают ситуации, когда для одного класса нужно обявить только одно изменющееся свойство для нескольких брейкпоинтов.
+// Чтобы не пишать несколько раз media-breakpoint-... можно воспользоваться миксинами adaptive.
+
+// Пример использования
+// Следущее объявление класса с использованием данного миксина
+// .class {
+//   padding: 10px;
+
+//   @include adaptive-up(padding, (
+//     md: 20px,
+//     lg: 30px,
+//     xxl: 40px
+//   ))
+// }
+
+// приведет к следующим css стилям
+
+// .class {
+//   padding: 10px;
+// }
+
+// @media (min-width: 768px) {
+//   .class {
+//     padding: 20px;
+//   }
+// }
+
+// @media (min-width: 992px) {
+//   .class {
+//     padding: 30px;
+//   }
+// }
+
+// @media (min-width: 1400px) {
+//   .class {
+//     padding: 40px;
+//   }
+// }
+
+@mixin adaptive-up($prop, $grid-breakpoint-values) {
+  @each $grid-breakpoint, $value in $grid-breakpoint-values {
+    @if not map.has-key($grid-breakpoints, $grid-breakpoint) {
+      @error "#{$grid-breakpoint} is not a valid grid-breakpoint. Expected one of #{map.keys($grid-breakpoints)}.";
+    }
+
+    @include media-breakpoint-up($grid-breakpoint) {
+      #{$prop}: $value;
+    }
+  }
+}
+
+// Пример использования
+// Следущее объявление класса с использованием данного миксина
+// .class {
+//   padding: 40px;
+
+//   @include adaptive-down(padding, (
+//     md: 10px,
+//     lg: 20px,
+//     xl: 20px
+//   ))
+// }
+
+// приведет к следующим css стилям
+
+// .class {
+//   padding: 40px;
+// }
+
+// @media (max-width: 767.98px) {
+//   .class {
+//     padding: 10px;
+//   }
+// }
+
+// @media (max-width: 991.98px) {
+//   .class {
+//     padding: 20px;
+//   }
+// }
+
+// @media (max-width: 1199.98px) {
+//   .class {
+//     padding: 20px;
+//   }
+// }
+
+@mixin adaptive-down($prop, $grid-breakpoint-values) {
+  @each $grid-breakpoint, $value in $grid-breakpoint-values {
+    @if not map.has-key($grid-breakpoints, $grid-breakpoint) {
+      @error "#{$grid-breakpoint} is not a valid grid-breakpoint. Expected one of #{map.keys($grid-breakpoints)}.";
+    }
+
+    @include media-breakpoint-down($grid-breakpoint) {
+      #{$prop}: $value;
+    }
+  }
+}

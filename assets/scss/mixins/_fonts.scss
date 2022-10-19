@@ -1,0 +1,58 @@
+// https://www.figma.com/file/gDVmjHO7Uhbuv5uEWSj7aO/Unipedia?node-id=88%3A2375
+@use 'sass:list';
+@use 'sass:math';
+
+// Inter
+$inter-regular-valid-font-sizes: 32, 24, 18, 16, 14, 10;
+
+@mixin fontInterRegular($font-size) {
+  @if not list.index($inter-regular-valid-font-sizes, $font-size) {
+    @error "#{$font-size} is not a valid font-size. Expected one of #{$inter-regular-valid-font-sizes}.";
+  }
+
+  font-family: 'Inter-Regular';
+  font-size: #{$font-size}px;
+  line-height: 150%;
+}
+
+$inter-medium-valid-font-sizes: 16, 14;
+
+@mixin fontInterMedium($font-size) {
+  @if not list.index($inter-medium-valid-font-sizes, $font-size) {
+    @error "#{$font-size} is not a valid font-size. Expected one of #{$inter-medium-valid-font-sizes}.";
+  }
+
+  font-family: 'Inter-Medium';
+  font-size: #{$font-size}px;
+  line-height: 150%;
+}
+
+// Poppins
+$poppins-semibold-valid-font-sizes: 48, 32, 16;
+
+@mixin fontPoppinsSemiBold($font-size) {
+  @if not list.index($poppins-semibold-valid-font-sizes, $font-size) {
+    @error "#{$font-size} is not a valid font-size. Expected one of #{$poppins-semibold-valid-font-sizes}.";
+  }
+
+  font-family: 'Poppins-SemiBold';
+  font-size: #{$font-size}px;
+  line-height: 120%;
+}
+
+$poppings-meduim-valid-font-sizes: 24, 18, 16, 14, 12;
+
+@mixin fontPoppinsMeduim($font-size) {
+  @if not list.index($poppings-meduim-valid-font-sizes, $font-size) {
+    @error "#{$font-size} is not a valid font-size. Expected one of #{$poppings-meduim-valid-font-sizes}.";
+  }
+
+  font-family: 'Poppins-Medium';
+  font-size: #{$font-size}px;
+
+  @if $font-size == 24px {
+    line-height: 120%;
+  } @else {
+    line-height: 130%;
+  }
+}

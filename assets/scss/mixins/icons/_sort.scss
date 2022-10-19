@@ -1,0 +1,10 @@
+@mixin icon-sort() {
+  background-image: escape-svg(
+    url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.5" clip-path="url(#clip0_11430_3687)"><rect width="16" height="1.45455" rx="0.727273" fill="white"/><rect y="4.84766" width="8.47059" height="1.45455" rx="0.727273" fill="white"/><rect y="9.69727" width="16" height="1.45455" rx="0.727273" fill="white"/><rect y="14.5449" width="8.47059" height="1.45455" rx="0.727273" fill="white"/></g><defs><clipPath id="clip0_11430_3687"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>')
+  );
+  background-size: 100% 100%;
+
+  display: block;
+  width: 16px;
+  height: 16px;
+}

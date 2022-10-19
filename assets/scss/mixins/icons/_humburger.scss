@@ -1,0 +1,10 @@
+@mixin icon-humburger() {
+  background-image: escape-svg(
+    url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="4" width="20" height="2.72727" rx="1.36364" fill="white"/><rect x="2" y="10.3633" width="20" height="2.72727" rx="1.36364" fill="white"/><rect x="2" y="16.7275" width="12.7273" height="2.72727" rx="1.36364" fill="white"/></svg>')
+  );
+  background-size: 100% 100%;
+
+  display: block;
+  width: 24px;
+  height: 24px;
+}

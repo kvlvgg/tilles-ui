@@ -1,0 +1,78 @@
+// $grid-breakpoints: (
+//   xs: 0,
+//   sm: 576px,
+//   md: 768px,
+//   lg: 992px,
+//   xl: 1200px,
+//   xxl: 1440px,
+// ) !default;
+
+$white: #ffffff;
+$light-grey: #87868d;
+$grey: #2a3050;
+$dark-grey: #1f1f31;
+$black: #0f0e1b;
+
+$violet: #6240d0;
+$pink: #ffa7e8;
+$green: #a5fb37;
+$purple: #d9acfd;
+$menthol: #00fee8;
+$blue: #7597e8;
+$yellow: #fed500;
+$orange: #ffb25c;
+$red: #ff7b7b;
+
+$dark-green: #19b716;
+
+$bg: $black;
+$bg-medium: $dark-grey;
+$bg-light: $grey;
+
+$text-color-primary: $white;
+$text-color-secondary: $light-grey;
+
+$border-radius: 16px;
+$border-color: $grey;
+
+$input-bg: $bg-light;
+$input-text-color: $white;
+$input-font-size-sm: 14;
+$input-font-size-md: 24;
+$input-height-md: 56px;
+$input-padding-md: 0 24px;
+$input-font-size-lg: 24;
+$input-radius: 16px;
+
+$button-primary-bg: $bg-light;
+$button-secondary-bg: $blue;
+$button-alternative-bg: $blue;
+$button-text-color: $white;
+$button-font-size-md: 16;
+$button-height-sm: 40px;
+$button-height-md: 56px;
+$button-radius: 16px;
+
+$dropdown-option-hover: #554d7b;
+
+$gap-xxxs: 4px;
+$gap-xxs: 8px;
+$gap-xs: 12px;
+$gap-sm: 16px;
+$gap-md: 20px;
+$gap-lg: 24px;
+$gap-xl: 32px;
+$gap-xxl: 40px;
+$gap-xxxl: 48px;
+
+$gap-checkboxes-radiobuttons-grid: 64px;
+
+$header-height: 84px;
+$footer-height: 84px;
+
+$main-padding-left-right: 140px;
+
+$tab-active-border-color: $blue;
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;

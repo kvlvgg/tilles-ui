@@ -1,0 +1,22 @@
+version: '3'
+services:
+  tillies-ui:
+    container_name: tillies-ui
+    build: .
+    network_mode: host
+    command: npm start
+    restart: always
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '3'
+  tillies-ui-test:
+    container_name: tillies-ui-test
+    build: .
+    network_mode: host
+    command: npm run start-develop
+    restart: always
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '3'

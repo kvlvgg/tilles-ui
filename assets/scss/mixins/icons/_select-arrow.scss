@@ -1,0 +1,10 @@
+@mixin icon-select-arrow() {
+  background-image: escape-svg(
+    url('data:image/svg+xml;utf8,<svg width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.9951 1L7.99512 7L1.99512 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+  );
+  background-size: 100% 100%;
+
+  display: block;
+  width: 15px;
+  height: 8px;
+}
