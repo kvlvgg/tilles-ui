@@ -3,7 +3,7 @@
     <div :class="$style.value">
       <span v-text="value" />
 
-      <span v-if="change" :class="$style.change">({{ change | change }})</span>
+      <span v-if="change !== null" :class="$style.change">({{ change | change }})</span>
     </div>
     <div v-text="label" />
   </div>
@@ -16,7 +16,7 @@ export default Vue.extend({
   name: 'GameStatisticsItem',
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: '--',
     },
     change: {

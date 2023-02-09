@@ -12,7 +12,12 @@ const modal = {
       const containerId = createContainer();
       document.body.style.overflow = 'hidden';
 
+      const $auth = window.$nuxt.$auth;
+
       const vue = new Vue({
+        store: window.$nuxt.$store,
+        provide: { $auth },
+
         methods: {
           change(e: T) {
             resolve(e);

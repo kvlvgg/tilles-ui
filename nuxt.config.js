@@ -26,7 +26,13 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/filters.ts' }, { src: '~/plugins/modal.ts' }, { src: '~/plugins/maska.ts' }],
+  plugins: [
+    { src: '~/plugins/api.ts' },
+    { src: '~/plugins/auth.ts' },
+    { src: '~/plugins/filters.ts' },
+    { src: '~/plugins/modal.ts' },
+    { src: '~/plugins/maska.ts' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: false,
@@ -49,7 +55,12 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: 'https://tillies.xyz/api/v2/',
+    headers: {
+      post: {
+        'Content-Type': 'application/json',
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

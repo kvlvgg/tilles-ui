@@ -62,6 +62,8 @@ import Mentions from '@/components/game/Mentions/index.vue';
 
 import { ORIENTATION, SIZE } from 'ui/Spacing/constants';
 
+import { STORE } from '@/store/TwitterProject/constants';
+
 export default Vue.extend({
   name: 'TillesGame',
   components: { Tabs, Tab, Img, BackLink, Spacing, MainInfo, Overview, Mentions },
@@ -71,6 +73,11 @@ export default Vue.extend({
       ORIENTATION,
       SIZE,
     };
+  },
+
+  created() {
+    const slug = this.$route.params.slug;
+    this.$store.dispatch(STORE.ACTIONS.LOAD_TWITTER_PROJECT, slug);
   },
 });
 </script>

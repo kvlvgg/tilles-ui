@@ -1,11 +1,28 @@
 <template>
   <div :class="$style.mainInfoStatisctics">
-    <StatisticsItem value="10000" label="Items" />
-    <StatisticsItem value="6578" label="Owners" />
-    <StatisticsItem value="152k ETH" :change="0.7" label="Total volume" />
-    <StatisticsItem value="22 ETH" :change="0.7" label="Floor price" />
-    <StatisticsItem value="23.02.2021" label="Twitter creation date" />
-    <StatisticsItem value="323 928" :change="0.7" label="Twitter followers" />
+    <StatisticsItem :value="twitterProject.itemsCount" label="Items" />
+    <StatisticsItem :value="twitterProject.ownersCount" label="Owners" />
+
+    <StatisticsItem
+      :value="twitterProject.totalVolume.value | compact | measure('ETH', { spacing: true })"
+      :change="twitterProject.totalVolume.change"
+      label="Total volume"
+    />
+
+    <StatisticsItem
+      :value="twitterProject.floorPrice.value | compact | measure('ETH', { spacing: true })"
+      :change="twitterProject.floorPrice.change"
+      label="Floor price"
+    />
+
+    <StatisticsItem :value="twitterProject.twitterCreationDate | date" label="Twitter creation date" />
+
+    <StatisticsItem
+      :value="twitterProject.twitterAudience.value | thousandSeparator"
+      :change="twitterProject.twitterAudience.change"
+      label="Twitter followers"
+    />
+
     <StatisticsItem label="Discord members" />
     <StatisticsItem label="Suspicious users" />
   </div>
@@ -16,9 +33,18 @@ import Vue from 'vue';
 
 import StatisticsItem from '@/components/game/StatisticsItem.vue';
 
+import { STORE } from '@/store/TwitterProject/constants';
+import { TwitterProject } from '@/store/TwitterProject/getters';
+
 export default Vue.extend({
   name: 'GameMainInfoStatistics',
   components: { StatisticsItem },
+
+  computed: {
+    twitterProject(): TwitterProject {
+      return this.$store.getters[STORE.GETTERS.TWITTER_PROJECT];
+    },
+  },
 });
 </script>
 

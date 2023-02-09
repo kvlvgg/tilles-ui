@@ -1,0 +1,35 @@
+import StoreHelper from '@/utils/StoreHelper';
+
+export const StoreName = 'User' as const;
+
+export const GETTERS = {
+  USER: 'USER',
+  IS_SIGNED_IN: 'IS_LOGGED_IN',
+  WALLET_ADDRESS: 'WALLET_ADDRESS',
+  METAMASK_STATUS: 'METAMASK_STATUS',
+  SIGN_BUTTON_TEXT: 'SIGN_BUTTON_TEXT',
+} as const;
+
+export const ACTIONS = {
+  ON_SING_BUTTON_CLICK: 'ON_SING_BUTTON_CLICK',
+  METAMASK_START_ONBOARDING: 'METAMASK_START_ONBOARDING',
+  METAMASK_INIT: 'METAMASK_INIT',
+  METAMASK_REQUEST_ACCOUNT: 'METAMASK_REQUEST_ACCOUNT',
+  METAMASK_SIGN: 'METAMASK_SIGN',
+  LOAD_OR_CREATE_USER: 'LOAD_OR_CREATE_USER',
+  AUTHENTICATE: 'AUTHENTICATE',
+  UNAUTHENTICATE: 'UNAUTHENTICATE',
+} as const;
+
+export const MUTATIONS = {
+  CLEAR: 'CLEAR',
+  SET_TOKEN: 'SET_TOKEN',
+  SET_USER: 'SET_USER',
+  SET_NONCE: 'SET_NONCE',
+} as const;
+
+export const STORE = {
+  GETTERS: StoreHelper.AddStorePrefix(StoreName, GETTERS),
+  ACTIONS: StoreHelper.AddStorePrefix(StoreName, ACTIONS),
+  MUTATIONS: StoreHelper.AddStorePrefix(StoreName, MUTATIONS),
+};

@@ -27,7 +27,7 @@
       </thead>
 
       <tbody>
-        <tr v-for="(entry, i) in narrowedValue" :key="i">
+        <tr v-for="(entry, i) in value" :key="i">
           <td v-for="(field, j) in fields" :key="j">
             <slot :name="field.name" :data="{ value: entry[field.name], entry }">
               {{ entry[field.name] }}
@@ -39,7 +39,7 @@
 
     <div>
       <Spacing :size="SIZE.LG" />
-      <Paginator v-if="paginator" :pages="pages" @page="currenctPage = $event" />
+      <Paginator v-if="paginator" :pages="total" @page="$emit('page', $event)" />
     </div>
   </div>
 </template>
@@ -81,9 +81,9 @@ export default Vue.extend({
       default: false,
     },
 
-    rowsPerPage: {
+    total: {
       type: Number,
-      default: null,
+      default: 0,
     },
 
     sortField: {
@@ -101,25 +101,17 @@ export default Vue.extend({
     return {
       ORIENTATION,
       SIZE,
-      currenctPage: 0,
     };
-  },
-
-  computed: {
-    pages(): number {
-      return Math.ceil(this.value.length / this.rowsPerPage);
-    },
-
-    narrowedValue(): any[] {
-      return [...this.value].splice(this.rowsPerPage * this.currenctPage, this.rowsPerPage);
-    },
   },
 
   methods: {
     sort(field: TableField) {
-      this.$emit('update:sortField', field.sortName ?? field.name);
-      this.$emit('update:sortDesc', this.sortField === (field.sortName ?? field.name) ? this.sortDesc * -1 : 1);
-      this.$emit('sort');
+      const sortField = field.sortName ?? field.name;
+      const sortOrder = this.sortField === (field.sortName ?? field.name) ? this.sortDesc * -1 : 1;
+
+      this.$emit('update:sortField', sortField);
+      this.$emit('update:sortDesc', sortOrder);
+      this.$emit('sort', `${sortOrder === -1 ? '-' : ''}${sortField}`);
     },
   },
 });

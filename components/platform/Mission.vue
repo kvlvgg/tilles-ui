@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>Web3 Community Intelligence Platform</h1>
+    <h1>#1 tool to explore Twitter mentions</h1>
     <Spacing :size="SIZE.XXS" />
-    <h3 :class="$style.textColorOrange">#1 bridge between communities and projects</h3>
+    <h3 :class="$style.textColorOrange">Web3 Projects & Communities Intelligence Platform</h3>
   </div>
 </template>
 

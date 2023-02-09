@@ -2,7 +2,7 @@
   <nuxt-link :class="$style.profileLink" to="/">
     <Img file="profile-link.svg" />
     <Spacing :size="SIZE.XXXS" :orientation="ORIENTATION.HORIZONTAL" />
-    <span v-text="walletId" />
+    <span v-text="walletAddress" />
   </nuxt-link>
 </template>
 
@@ -14,6 +14,8 @@ import Spacing from 'ui/Spacing/Spacing.vue';
 
 import { ORIENTATION, SIZE } from 'ui/Spacing/constants';
 
+import { STORE } from '@/store/User/constants';
+
 export default Vue.extend({
   name: 'TillesProfileLink',
   components: { Img, Spacing },
@@ -22,8 +24,14 @@ export default Vue.extend({
     return {
       ORIENTATION,
       SIZE,
-      walletId: '0x96bd...d1DD',
     };
+  },
+
+  computed: {
+    walletAddress() {
+      const walletAddress: string = this.$store.getters[STORE.GETTERS.WALLET_ADDRESS];
+      return `${walletAddress.slice(0, 6)}...${walletAddress.slice(walletAddress.length - 4, walletAddress.length)}`;
+    },
   },
 });
 </script>

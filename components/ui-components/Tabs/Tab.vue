@@ -29,11 +29,6 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-
-    isUpcoming: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   data() {

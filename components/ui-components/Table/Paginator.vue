@@ -10,7 +10,13 @@
       :class="{ [$style.current]: pageLink === currentPage }"
       @click="switchPage(pageLink)"
     >
-      {{ pageLink + 1 }}
+      <span v-if="pageLink === pages && isGap.end">...</span>
+      <Spacing v-if="pageLink === pages && isGap.end" :orientation="ORIENTATION.HORIZONTAL" :size="SIZE.XXS" />
+
+      {{ pageLink }}
+
+      <Spacing v-if="pageLink === 1 && isGap.start" :orientation="ORIENTATION.HORIZONTAL" :size="SIZE.XXS" />
+      <span v-if="pageLink === 1 && isGap.start">...</span>
     </button>
 
     <button :class="$style.nextLink" @click="switchPage(currentPage + 1)">
@@ -22,8 +28,13 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import Spacing from 'ui/Spacing/Spacing.vue';
+import { ORIENTATION, SIZE } from 'ui/Spacing/constants';
+
 export default Vue.extend({
   name: 'UniTablePaginator',
+  components: { Spacing },
+
   props: {
     pages: {
       type: Number,
@@ -33,18 +44,36 @@ export default Vue.extend({
 
   data() {
     return {
+      ORIENTATION,
+      SIZE,
+
       currentPage: 1,
     };
   },
 
   computed: {
     pageLinks(): number[] {
-      return new Array(this.pages).fill(0).map((_, i) => i);
-    },
-  },
+      if (this.pages === 1) return [1];
+      const firstLink = 1;
+      const lastLink = this.pages;
 
-  mounted() {
-    this.switchPage(0);
+      const surroundLinks = [-3, -2, -1, 0, 1, 2, 3]
+        .map(x => this.currentPage + x)
+        .filter(x => x > 1 && x < this.pages);
+
+      return [firstLink, ...surroundLinks, lastLink];
+    },
+
+    isGap(): { start: boolean; end: boolean } {
+      const [first, second] = this.pageLinks;
+      const last = this.pageLinks[this.pageLinks.length - 1];
+      const lastButOne = this.pageLinks[this.pageLinks.length - 2];
+
+      return {
+        start: second - first > 1,
+        end: last - lastButOne > 1,
+      };
+    },
   },
 
   methods: {
@@ -72,6 +101,10 @@ export default Vue.extend({
     &.current {
       background-color: $white;
       color: $bg;
+    }
+
+    &:has(span) {
+      width: 50px;
     }
   }
 

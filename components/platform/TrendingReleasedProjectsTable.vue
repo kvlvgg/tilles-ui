@@ -1,56 +1,58 @@
 <template>
   <Table
-    :value="popularity"
+    :value="twitterProjects.items"
     :fields="fields"
     :sortField.sync="sortField"
     :sortDesc.sync="sortDesc"
     paginator
-    :rowsPerPage="10"
+    :total="twitterProjects.pages"
+    @sort="onSortChanged"
+    @page="onPageChanged"
   >
-    <template #Game="{ data }">
+    <template #name="{ data }">
       <nuxt-link
         :to="{
-          name: 'game-id',
-          params: { id: data.entry.GameId },
+          name: 'game-slug',
+          params: { slug: data.entry.slug },
         }"
         :class="$style.gameField"
       >
-        <Img file="test-game-logo.png" />
+        <Img :url="data.entry.logo" width="56px" height="56px" borderRadius="8px" />
         {{ data.value }}
       </nuxt-link>
     </template>
 
-    <template #FloorPrice="{ data }">
-      <div>{{ data.value.price | thousandSeparator | measure('Eth', { spacing: true }) }}</div>
+    <template #floorPrice="{ data }">
+      <div>{{ data.value.value | thousandSeparator | measure('Eth', { spacing: true }) }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #TwitterAudience="{ data }">
-      <div>{{ data.value.amount | thousandSeparator | measure('k') }}</div>
+    <template #twitterAudience="{ data }">
+      <div>{{ data.value.value | thousandSeparator | measure('k') }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #Influencers="{ data }">
+    <template #influencers="{ data }">
       <div>{{ data.value.percent | measure('%') }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #Mentions="{ data }">
-      <div>{{ data.value.amount | thousandSeparator }}</div>
+    <template #mentions="{ data }">
+      <div>{{ data.value.value | thousandSeparator }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #Engagements="{ data }">
-      <div>{{ data.value.amount | thousandSeparator | measure('k') }}</div>
+    <template #engagements="{ data }">
+      <div>{{ data.value.value | thousandSeparator | measure('k') }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #Reach="{ data }">
-      <div>{{ data.value.amount | thousandSeparator | measure('k') }}</div>
+    <template #suspicious="{ data }">
+      <div>{{ data.value.value | thousandSeparator | measure('k') }}</div>
       <div :class="getChangeStyle(data.value.change)">{{ data.value.change | change }}</div>
     </template>
 
-    <template #Actions="{ data }">
+    <template #actions="{ data }">
       <div :class="$style.actionsField">
         <Button variant="primary" size="md" square>
           <i :class="{ [$style.favoritesButton]: true, [$style.selected]: data.value.isFavorite }" />
@@ -60,8 +62,8 @@
 
         <Button
           :to="{
-            name: 'game-id',
-            params: { id: data.entry.GameId },
+            name: 'game-slug',
+            params: { slug: data.entry.slug },
           }"
           variant="secondary"
           size="md"
@@ -84,6 +86,9 @@ import Spacing from 'ui/Spacing/Spacing.vue';
 
 import { SIZE, ORIENTATION } from 'ui/Spacing/constants';
 
+import { STORE } from '@/store/TwitterProjects/constants';
+import { TwitterProjects } from '@/store/TwitterProjects/getters';
+
 export default Vue.extend({
   name: 'TilliesPlatformTrendingReleasedProjectsTable',
   components: { Table, Img, Button, Spacing },
@@ -94,45 +99,38 @@ export default Vue.extend({
       ORIENTATION,
 
       fields: [
-        { name: 'Game', header: 'Games' },
-        { name: 'FloorPrice', header: 'Floor price', sortable: true },
-        { name: 'TwitterAudience', header: 'Twitter audience', sortable: true },
-        { name: 'Influencers', header: 'Influencers', sortable: true },
-        { name: 'Mentions', header: 'Mentions', sortable: true },
-        { name: 'Engagements', header: 'Engagements', sortable: true },
-        { name: 'Reach', header: 'Reach', sortable: true },
-        { name: 'Actions' },
+        { name: 'name', header: 'Games' },
+        { name: 'floorPrice', header: 'Floor price', sortable: true, sortName: 'floor_price' },
+        { name: 'twitterAudience', header: 'Twitter audience', sortable: true, sortName: 'twitter_audience' },
+        { name: 'influencers', header: 'Influencers', sortable: true },
+        { name: 'mentions', header: 'Mentions', sortable: true, sortName: 'mentions' },
+        { name: 'engagements', header: 'Engagements', sortable: true, sortName: 'engagements' },
+        { name: 'suspicious', header: 'Suspicious', sortable: true },
+        { name: 'actions' },
       ],
 
       sortField: 'FloorPrice',
       sortDesc: 1,
-
-      popularity: new Array(100).fill({}).map(() => ({
-        GameId: Math.floor(Math.random() * 100000000000),
-        Game: [
-          'Bored Apes Yacht Club',
-          'Axie Infinity',
-          'Swaggy Whales',
-          'Doodles',
-          'Moonbirds',
-          'Azuki',
-          'Decentraland',
-          'The Sandbox',
-          'Cool Cats',
-          'Art Blocks Curated',
-        ][Math.floor(Math.random() * 10)],
-        FloorPrice: { price: Math.floor(Math.random() * 10000) / 100, change: Math.floor(Math.random() * 100) / 10 },
-        TwitterAudience: { amount: Math.floor(Math.random() * 1000), change: -Math.floor(Math.random() * 100) / 10 },
-        Influencers: { percent: Math.floor(Math.random() * 100) / 10, change: Math.floor(Math.random() * 100) / 10 },
-        Mentions: { amount: Math.floor(Math.random() * 1000), change: -Math.floor(Math.random() * 100) / 10 },
-        Engagements: { amount: Math.floor(Math.random() * 10000), change: Math.floor(Math.random() * 100) / 10 },
-        Reach: { amount: Math.floor(Math.random() * 10000), change: -Math.floor(Math.random() * 100) / 10 },
-        Actions: { isFavorite: !!Math.floor(Math.random() * 2) },
-      })),
     };
   },
 
+  computed: {
+    twitterProjects(): TwitterProjects {
+      return this.$store.getters[STORE.GETTERS.TWITTER_PROJECTS];
+    },
+  },
+
   methods: {
+    onSortChanged(sortField: string) {
+      this.$store.commit(STORE.MUTATIONS.SET_SORT_FIELD, sortField);
+      this.$store.dispatch(STORE.ACTIONS.LOAD_TWITTER_PROJECTS);
+    },
+
+    onPageChanged(page: number) {
+      this.$store.commit(STORE.MUTATIONS.SET_CURRENT_PAGE, page);
+      this.$store.dispatch(STORE.ACTIONS.LOAD_TWITTER_PROJECTS);
+    },
+
     getChangeStyle(value: number) {
       return {
         [this.$style.change]: true,

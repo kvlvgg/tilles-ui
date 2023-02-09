@@ -1,11 +1,11 @@
 <template>
   <div :class="$style.mainInfoLogo">
     <div :class="$style.logo">
-      <Img file="game-main-info-logo.png" />
+      <Img :url="twitterProject.logo" width="80px" height="80px" borderRadius="16px" />
       <Spacing :orientation="ORIENTATION.HORIZONTAL" :size="SIZE.LG" />
       <div>
-        <h2>Doodles</h2>
-        <span>@doodles</span>
+        <h2>{{ twitterProject.name }}</h2>
+        <span>@{{ twitterProject.username }}</span>
       </div>
     </div>
 
@@ -46,6 +46,9 @@ import Spacing from 'ui/Spacing/Spacing.vue';
 
 import { SIZE, ORIENTATION } from 'ui/Spacing/constants';
 
+import { STORE } from '@/store/TwitterProject/constants';
+import { TwitterProject } from '@/store/TwitterProject/getters';
+
 export default Vue.extend({
   name: 'GameMainInfoLogo',
   components: { Img, Button, Spacing },
@@ -55,6 +58,12 @@ export default Vue.extend({
       SIZE,
       ORIENTATION,
     };
+  },
+
+  computed: {
+    twitterProject(): TwitterProject {
+      return this.$store.getters[STORE.GETTERS.TWITTER_PROJECT];
+    },
   },
 });
 </script>

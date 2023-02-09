@@ -68,5 +68,10 @@ export default Vue.extend({
     background-color: transparent;
     border: 2px solid $grey;
   }
+
+  &[variant='text'] {
+    background-color: transparent;
+    border: none;
+  }
 }
 </style>

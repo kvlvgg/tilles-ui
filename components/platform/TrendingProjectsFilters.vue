@@ -79,7 +79,11 @@
       </DropDown>
     </div>
 
-    <TimeFilter v-model="timeFilterValue" :times="['1h', '24h', '7d', '30d', 'All time']" />
+    <TimeFilter
+      v-model="timeFilterValue"
+      :times="['1h', '24h', '7d', '30d', 'All time']"
+      @input="$emit('change-time-filter', $event)"
+    />
 
     <Button :class="$style.cleanButton" variant="primary" size="md">Clean</Button>
   </div>
@@ -124,7 +128,7 @@ export default Vue.extend({
       twitterAudienceEnabled: false,
       twitterAudience: [20, 100],
 
-      timeFilterValue: '1h',
+      timeFilterValue: '7d',
     };
   },
 });

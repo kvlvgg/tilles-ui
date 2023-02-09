@@ -5,9 +5,7 @@
     <Spacing :size="SIZE.LG" />
 
     <div :class="$style.mission">
-      A community-driven collectibles project featuring art by Burnt Toast. Doodles come in a joyful range of colors,
-      traits and sizes with a collection size of 10,000. Each Doodle allows its owner to vote for experiences and
-      activations paid for by the Doodles Community Treasury.
+      {{ twitterProject.description }}
     </div>
 
     <Spacing :size="SIZE.LG" />
@@ -26,6 +24,9 @@ import MainInfoStatistics from '@/components/game/MainInfoStatistics.vue';
 
 import { SIZE } from 'ui/Spacing/constants';
 
+import { STORE } from '@/store/TwitterProject/constants';
+import { TwitterProject } from '@/store/TwitterProject/getters';
+
 export default Vue.extend({
   name: 'GameMainInfo',
   components: { Spacing, MainInfoLogo, MainInfoStatistics },
@@ -34,6 +35,12 @@ export default Vue.extend({
     return {
       SIZE,
     };
+  },
+
+  computed: {
+    twitterProject(): TwitterProject {
+      return this.$store.getters[STORE.GETTERS.TWITTER_PROJECT];
+    },
   },
 });
 </script>

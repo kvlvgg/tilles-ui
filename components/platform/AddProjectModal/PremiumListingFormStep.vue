@@ -48,13 +48,17 @@
         <Input v-model="form.PublicSaleDate" v-maska="'## / ## / ####'" size="md" placeholder="__ / __  / ____" />
       </FormGroup>
 
+      <FormGroup :class="$style.fileUploader" label="DOWNLOAD FILE">
+        <FileUploader v-model="form.File" />
+      </FormGroup>
+
       <FormGroup :class="$style.description" label="PROJECT DESCRIPTION">
         <TextArea />
       </FormGroup>
     </div>
-    <Spacing :size="SIZE.XXL" />
+    <!-- <Spacing :size="SIZE.XXL" /> -->
 
-    <FormGroup :contentClass="$style.tags" label="TAGS" :gap="SIZE.MD">
+    <!-- <FormGroup :contentClass="$style.tags" label="TAGS" :gap="SIZE.MD">
       <CheckBox v-model="form.Tags['2D']" label="2D" />
       <CheckBox v-model="form.Tags.Collectible" label="Collectible" />
       <CheckBox v-model="form.Tags['Digital art']" label="Digital art" />
@@ -79,7 +83,7 @@
       <CheckBox v-model="form.Tags.DAO" label="DAO" />
       <CheckBox v-model="form.Tags.Music" label="Music" />
       <CheckBox v-model="form.Tags.Other" label="Other" />
-    </FormGroup>
+    </FormGroup> -->
   </div>
 </template>
 
@@ -91,13 +95,14 @@ import FormGroup from 'ui/Form/FormGroup.vue';
 import Input from 'ui/Input/Input.vue';
 import RadioButton from 'ui/Radio/RadioButton.vue';
 import TextArea from 'ui/TextArea/TextArea.vue';
-import CheckBox from 'ui/CheckBox/CheckBox.vue';
+// import CheckBox from 'ui/CheckBox/CheckBox.vue';
+import FileUploader from 'ui/FileUploader/FileUploader.vue';
 
 import { SIZE } from 'ui/Spacing/constants';
 
 export default Vue.extend({
   name: 'AddProjectModalPremiumListingFormStep',
-  components: { Spacing, FormGroup, Input, RadioButton, TextArea, CheckBox },
+  components: { Spacing, FormGroup, Input, RadioButton, TextArea, FileUploader },
 
   data() {
     return {
@@ -111,33 +116,34 @@ export default Vue.extend({
         PublicSalePrice: null,
         PreSaleDate: null,
         PublicSaleDate: null,
+        File: null,
 
-        Tags: {
-          '2D': false,
-          Collectible: false,
-          'Digital art': false,
-          Utility: false,
-          Metaverse: false,
-          'Real estate': false,
+        // Tags: {
+        //   '2D': false,
+        //   Collectible: false,
+        //   'Digital art': false,
+        //   Utility: false,
+        //   Metaverse: false,
+        //   'Real estate': false,
 
-          Gamefi: false,
-          '3D': false,
-          Generative: false,
-          Gaming: false,
-          Rewards: false,
-          Defi: false,
+        //   Gamefi: false,
+        //   '3D': false,
+        //   Generative: false,
+        //   Gaming: false,
+        //   Rewards: false,
+        //   Defi: false,
 
-          Sport: false,
-          Membership: false,
-          'Pixel art': false,
-          Photography: false,
-          'Play to earn': false,
-          Collab: false,
+        //   Sport: false,
+        //   Membership: false,
+        //   'Pixel art': false,
+        //   Photography: false,
+        //   'Play to earn': false,
+        //   Collab: false,
 
-          DAO: false,
-          Music: false,
-          Other: false,
-        },
+        //   DAO: false,
+        //   Music: false,
+        //   Other: false,
+        // },
       },
     };
   },
@@ -145,17 +151,21 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" module>
-.tags {
-  display: inline-grid;
-  grid-template-rows: repeat(6, 1fr);
-  grid-auto-flow: column;
-  gap: $gap-md $gap-checkboxes-radiobuttons-grid;
-}
+// .tags {
+//   display: inline-grid;
+//   grid-template-rows: repeat(6, 1fr);
+//   grid-auto-flow: column;
+//   gap: $gap-md $gap-checkboxes-radiobuttons-grid;
+// }
 
 .commonInfo {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: $gap-xxl;
+
+  .fileUploader {
+    grid-column: 1 / -1;
+  }
 
   .description {
     grid-column: 1 / -1;
